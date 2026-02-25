@@ -9,7 +9,7 @@ public class tesst2 {
 
 
         WebDriver driver = new ChromeDriver();
-        driver.get("https:\\www.amazon.com");
+        driver.get("https:\\www.amazon.com");  // driver.navigate().to("https:\\www.amazon.com"); aynı işe yarar
         String pageSource = driver.getPageSource();
 
         if (pageSource.contains("stylesheet")) {
