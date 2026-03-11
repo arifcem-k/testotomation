@@ -168,12 +168,12 @@ footer p{
 
   <div class="login-area">
     <h1>Yönetici Girişi</h1>
-    <p>Fateless Studio paneline erişmek için giriş yapın.</p>
+    <p> giriş yapın.</p>
 
     <form id="loginForm">
       <div class="input-group">
         <label>E-posta</label>
-        <input id="email" type="email" placeholder="admin@fateless.com.tr" required>
+        <input id="email" type="email" placeholder="admin@deneme.com.tr" required>
       </div>
 
       <div class="input-group">
@@ -187,7 +187,7 @@ footer p{
 
   <div class="door-frame">
     <div class="door">
-      <div class="nameplate">FATELESS</div>
+      <div class="nameplate">deneme</div>
     </div>
   </div>
 
@@ -195,15 +195,15 @@ footer p{
 
 <footer>
   <p>
-     Fateless Studio — aklınızda olan sorular için.<br>
-     info@fateless.com.tr
+     deneme — aklınızda olan sorular için.<br>
+     info@deneme.com.tr
   </p>
 </footer>
 
 <script>
 
 
-const correctEmail = "admin@fateless.com.tr";
+const correctEmail = "admin@deneme.com.tr";
 const correctPassword = "123456";
 
 const form = document.getElementById("loginForm");
@@ -243,7 +243,7 @@ public class tesst5 {
         WebDriver driver = new ChromeDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        driver.get("file:///C:/Users/arifcem.kapar/Desktop/login.html");
+        driver.get("login.html");
 
 
         driver.findElement(By.id("email")).sendKeys("yanlis@gmail.com");
@@ -260,7 +260,7 @@ public class tesst5 {
         driver.findElement(By.id("password")).clear();
 
 
-        driver.findElement(By.id("email")).sendKeys("admin@fateless.com.tr");
+        driver.findElement(By.id("email")).sendKeys("admin@deneme.com.tr");
         driver.findElement(By.id("password")).sendKeys("123456");
         driver.findElement(By.id("loginBtn")).click();
 
