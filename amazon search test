@@ -1,35 +1,36 @@
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.util.List;
 
-public class tesst3 {
+public class AmazonTest {
 
-    public static void main(String[] args) {
+    WebDriver driver;
+    WebDriverWait wait;
 
-
-
-        WebDriver driver = new ChromeDriver();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-
+    @BeforeMethod
+    public void setup() {
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         driver.get("https://www.amazon.com");
+    }
 
+    @Test
+    public void searchProductTest() {
 
         WebElement searchBox = wait.until(
-                ExpectedConditions.elementToBeClickable(
-                        By.id("twotabsearchtextbox")
-                )
+                ExpectedConditions.elementToBeClickable(By.id("twotabsearchtextbox"))
         );
 
         searchBox.sendKeys("iphone 13");
         searchBox.submit();
-
 
         List<WebElement> results = wait.until(
                 ExpectedConditions.presenceOfAllElementsLocatedBy(
@@ -37,35 +38,22 @@ public class tesst3 {
                 )
         );
 
-        if (results.isEmpty()) {
-            System.out.println("Sonuç bulunamadı ");
-            driver.quit();
-            return;
-        }
-
-        System.out.println("Arama sonuçları geldi ");
-
+        Assert.assertFalse(results.isEmpty(), "Arama sonucu bulunamadı");
 
         WebElement firstProduct = results.get(1);
         firstProduct.click();
 
-
         WebElement productTitle = wait.until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.id("productTitle")
-                )
+                ExpectedConditions.presenceOfElementLocated(By.id("productTitle"))
         );
-
 
         String titleText = productTitle.getText();
 
-        if (!titleText.isEmpty()) {
-            System.out.println("Ürün başlığı boş değil ");
-            System.out.println("Başlık: " + titleText);
-        } else {
-            System.out.println("Ürün başlığı boş ");
-        }
+        Assert.assertFalse(titleText.isEmpty(), "Ürün başlığı boş!");
+    }
 
+    @AfterMethod
+    public void teardown() {
         driver.quit();
     }
 }
