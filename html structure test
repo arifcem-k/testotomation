@@ -1,40 +1,39 @@
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
-public class tesst2 {
+public class PageSourceTest {
 
+    WebDriver driver;
 
-    public void main (String[] args) {
+    @BeforeMethod
+    public void setup() {
+        driver = new ChromeDriver();
+        driver.get("https://www.amazon.com");
+    }
 
+    @Test
+    public void checkPageSourceTest() {
 
-
-        WebDriver driver = new ChromeDriver();
-        driver.get("https:\\www.amazon.com");  // driver.navigate().to("https:\\www.amazon.com"); aynı işe yarar
         String pageSource = driver.getPageSource();
 
-        if (pageSource.contains("stylesheet")) {
-            System.out.println("Bu sayfa stylesheet içeriyor");
-        }  if (!pageSource.contains("stylesheet")) {
-            System.out.println("Stylesheet bağlantısı  bulunamadı harici css veya tailwind kullanıyo olabilir");
-        }
-        if (pageSource.contains("script")) {
-            System.out.println("Bu sayfada harici java vardır");
-        } if (!pageSource.contains("script")) {
-            System.out.println("harici java bulunamadı ");
-        }
-        if (!pageSource.contains("stylesheet") && !pageSource.contains("style")) {
-            System.out.println("Bu sayfa tailwind içeriyor");
-        }
-        if (!pageSource.contains("stylesheet") && !pageSource.contains("style")) {
-            System.out.println("CSS bulunamadı");
-        }
-        if (pageSource.contains("<!--")) {
-            System.out.println("yorum satırı içeriyor");
-        }   if (!pageSource.contains("<!--")){
-            System.out.println("yorum satırı içermiyor");
-        }
+        // CSS kontrol
+        boolean hasCSS = pageSource.contains("stylesheet") || pageSource.contains("<style>");
+        Assert.assertTrue(hasCSS, "Sayfada CSS bulunamadı!");
 
+        // JS kontrol
+        boolean hasJS = pageSource.contains("<script");
+        Assert.assertTrue(hasJS, "Sayfada JS bulunamadı!");
 
+        // Yorum satırı kontrol
+        boolean hasComment = pageSource.contains("<!--");
+        Assert.assertTrue(hasComment, "Yorum satırı bulunamadı!");
 
+    }
+
+    @AfterMethod
+    public void teardown() {
+        driver.quit();
     }
 }
