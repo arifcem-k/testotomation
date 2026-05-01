@@ -2,6 +2,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
@@ -10,7 +11,7 @@ import org.testng.annotations.*;
 import java.time.Duration;
 import java.util.List;
 
-public class AmazonTest {
+public class tesst3 {
 
     WebDriver driver;
     WebDriverWait wait;
@@ -19,12 +20,14 @@ public class AmazonTest {
     public void setup() {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        driver.manage().window().maximize();
         driver.get("https://www.amazon.com");
     }
 
     @Test
     public void searchProductTest() {
 
+        // 1. Search box bul ve arama yap
         WebElement searchBox = wait.until(
                 ExpectedConditions.elementToBeClickable(By.id("twotabsearchtextbox"))
         );
@@ -32,6 +35,7 @@ public class AmazonTest {
         searchBox.sendKeys("iphone 13");
         searchBox.submit();
 
+ 
         List<WebElement> results = wait.until(
                 ExpectedConditions.presenceOfAllElementsLocatedBy(
                         By.cssSelector("div[data-component-type='s-search-result']")
@@ -40,9 +44,29 @@ public class AmazonTest {
 
         Assert.assertFalse(results.isEmpty(), "Arama sonucu bulunamadı");
 
-        WebElement firstProduct = results.get(1);
-        firstProduct.click();
+        // 3. İlk GERÇEK ürünü locator ile bul (index yerine)
+        WebElement firstProduct = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        By.cssSelector("div[data-component-type='s-search-result'] h2 a")
+                )
+        );
 
+
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollIntoView(true);", firstProduct
+        );
+
+     
+        try {
+            firstProduct.click();
+        } catch (Exception e) {
+            System.out.println("Normal click fail oldu, JS click deneniyor...");
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].click();", firstProduct
+            );
+        }
+
+        // 6. Ürün sayfası açıldı mı kontrol et
         WebElement productTitle = wait.until(
                 ExpectedConditions.presenceOfElementLocated(By.id("productTitle"))
         );
@@ -50,6 +74,7 @@ public class AmazonTest {
         String titleText = productTitle.getText();
 
         Assert.assertFalse(titleText.isEmpty(), "Ürün başlığı boş!");
+        System.out.println("Ürün başlığı: " + titleText);
     }
 
     @AfterMethod
