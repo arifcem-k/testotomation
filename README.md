@@ -1,4 +1,4 @@
-# testotomation
+# test-automation
 This project contains UI test automation scenarios developed using Selenium and TestNG.
 ---
 # Purpose
