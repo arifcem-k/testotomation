@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Yönetici Girişi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,500,700&display=swap" rel="stylesheet">
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  background-color:#1C2127;
+  font-family:'Poppins', sans-serif;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  color:white;
+}
+
+.wrapper{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:100px;
+  max-width:1200px;
+  width:90%;
+  margin:auto;
+}
+
+/* ORTAK FORM */
+.form-area{
+  width:350px;
+}
+
+.form-area h1{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.form-area p{
+  font-size:14px;
+  opacity:0.7;
+  margin-bottom:25px;
+}
+
+.input-group{
+  margin-bottom:15px;
+}
+
+.input-group label{
+  font-size:13px;
+  display:block;
+  margin-bottom:6px;
+  opacity:0.8;
+}
+
+.input-group input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:white;
+  font-size:14px;
+  outline:none;
+}
+
+.form-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#8594A5;
+  color:#1C2127;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.form-btn:hover{
+  background:#A0AEC0;
+}
+
+/* FOOTER */
+
+footer{
+  padding:12px 10px;
+  text-align:center;
+  background:rgba(255,255,255,0.04);
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+footer p{
+  font-size:14px;
+  font-weight:300;
+  color:rgba(255,255,255,0.6);
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .wrapper{
+    flex-direction:column;
+    gap:40px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- LOGIN -->
+  <div class="form-area">
+    <h1>Giriş Yap</h1>
+    <p>Hesabınıza giriş yapın</p>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label>E-posta</label>
+        <input id="loginEmail" type="email" required>
+      </div>
+
+      <div class="input-group">
+        <label>Şifre</label>
+        <input id="loginPassword" type="password" required>
+      </div>
+
+      <button id="loginBtn" type="submit" class="form-btn">Giriş Yap</button>
+    </form>
+  </div>
+
+  <!-- SIGN UP -->
+  <div class="form-area">
+    <h1>Kayıt Ol</h1>
+    <p>Yeni hesap oluşturun</p>
+
+    <form id="signupForm">
+      <div class="input-group">
+        <label>E-posta</label>
+        <input id="signupEmail" type="email" required>
+      </div>
+
+      <div class="input-group">
+        <label>Şifre</label>
+        <input id="signupPassword" type="password" required>
+      </div>
+
+      <div class="input-group">
+        <label>Şifre Tekrar</label>
+        <input id="signupPassword2" type="password" required>
+      </div>
+
+      <button id="signupBtn" type="submit" class="form-btn">Kayıt Ol</button>
+    </form>
+  </div>
+
+</div>
+
+<footer>
+  <p>
+     deneme — aklınızda olan sorular için.<br>
+     info@deneme.com.tr
+  </p>
+</footer>
+
+<script>
+
+// fake database
+let users = [
+  { email: "admin@deneme.com.tr", password: "123456" }
+];
+
+// LOGIN
+document.getElementById("loginForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if(user){
+    alert("Giriş Başarılı ✅");
+  } else {
+    alert("Hatalı bilgiler ❌");
+  }
+});
+
+// SIGN UP
+document.getElementById("signupForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  const email = document.getElementById("signupEmail").value;
+  const pass1 = document.getElementById("signupPassword").value;
+  const pass2 = document.getElementById("signupPassword2").value;
+
+  if(pass1 !== pass2){
+    alert("Şifreler uyuşmuyor ❌");
+    return;
+  }
+
+  const exists = users.find(u => u.email === email);
+
+  if(exists){
+    alert("Bu kullanıcı zaten var ❌");
+    return;
+  }
+
+  users.push({ email: email, password: pass1 });
+
+  alert("Kayıt başarılı ✅");
+});
+
+</script>
+
+</body>
+</html>
